@@ -52,12 +52,12 @@ class morphological_evolver():
         
     def getAccuracy(self):
         return self.current_accuracy
+
+    def setAccuracy(self, accuracy):
+        self.current_accuracy = accuracy
     
     def getChromosome(self):
         return self.current_chromosome
-    
-    def setAccuracy(self, accuracy):
-        self.current_accuracy = accuracy
         
     def setChromosome(self, chromosome):
         self.current_chromosome = chromosome

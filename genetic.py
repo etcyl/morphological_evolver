@@ -5,7 +5,7 @@ Matt Fleetwood
 ECE 479/579 - Intelligent Robotics II
 Winter 2018
 
-Genetic algorithm that evolves a string of morphological operators and a structuring element.
+Genetic algorithm that evolves a string of morphological operators.
 The morpholigcal operators are stored in a list and applied sequentially, e.g. the 0th 
 operator is applied first to a CIFAR-10 dataset image, then the 1st, etc.
 A Support Vector Machine (SVM) is trained on the modified images.
@@ -48,7 +48,7 @@ class morphological_evolver():
             self.base_accuracy = baseline_accuracy
         self.num_operators = 7 #Number of morphological operators, or genes 
         self.current_accuracy = 0 #Current accuracy of the SVM using the applied morpholigcal operators
-        self.current_chromosome = [0]*self.num_operators #List to keep track of the current most fit chromosome
+        self.current_chromosomes = [0]*self.pop_size #List to keep track of the current most fit chromosomes
         
     def getAccuracy(self):
         return self.current_accuracy
@@ -62,6 +62,10 @@ class morphological_evolver():
     def setChromosome(self, chromosome):
         self.current_chromosome = chromosome
     
+    def createPop(self):
+        for i in range(self.pop_size):
+            self.current_chromosomes[i] = [0]*self.num_operators
+    
     def evaluateFitness(self, accuracy):
        if(accuracy == self.base_accuracy):
            return 1
@@ -69,12 +73,19 @@ class morphological_evolver():
            return 0
        
     def mutateParents(self, parentA, parentB):
+        """
+        Crossover point is the 4th element in the list
+        Take parentB's first 3 elements and replace parentA's first 3 elements with them
+        Take parentA's first 3 elements and replace parentB's first 3 elements with them
+        Example: 
+            parentA = [1, 2, 3, 4, 5, 6, 7]
+            parentB = [100, 200, 300, 400, 500, 600, 700]
+            childA = [100, 200, 300, 4, 5, 6, 7]
+            childB = [1, 2, 3, 400, 500, 600, 700]
+        """
         childA = [0]*self.num_operators
         childB = [0]*self.num_operators
         for i in range(3): 
-            #Crossover point is the 4th element in the list
-            #Take parentB's first 3 elements and replace parentA's first 3 elements with them
-            #Take parentA's first 3 elements and replace parentB's first 3 elements with them
             childA[i] = parentB[i]
             childA[i + 3] = parentA[i + 3]
             childB[i] = parentA[i]

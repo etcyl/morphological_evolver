@@ -16,6 +16,9 @@ SVM using them achieves accuracy as good or better than the reference SVM.
 @author: etcyl
 """
 
+import random
+import chromosome as ch
+
 class morphological_evolver():
     """The morphoglogical_evolver evolves a list of morphological operators"""
     #The class creates new chromosomes, lists of m_operators, from genes (m_operators)
@@ -30,25 +33,33 @@ class morphological_evolver():
                              if this is not set, the default value is 4.
         baseline_accuracy:  Standard to evolve towards, i.e. the accuracy that is ideally achieved
                              after evolving the network num_generations times;
-                             if this is not set, the default value is 75%
+                             if this is not set, the default value is 75%.
+                             
+        chromosome_len:     Length of an individual, or chromosome, in this case the array storing
+                            the operators;
+                            if this is not set, the default value is 7.
     """
     
-    def __init__(self, num_generations = None, population_size = None, baseline_accuracy = None):
+    def __init__(self, num_generations = None, population_size = None, baseline_accuracy = None, chromosome_len = None):
         if num_generations is None:
             self.generations = 100
         else:
             self.generations = num_generations 
         if population_size is None:
-            self.pop_size = 4
+            self.pop_size = 100
         else:
             self.pop_size = population_size
         if baseline_accuracy is None:
             self.base_accuracy = 0.75
         else:
             self.base_accuracy = baseline_accuracy
-        self.num_operators = 7 #Number of morphological operators, or genes 
+        if chromosome_len is None:
+            self.num_genes = 7 #Number of morphological operators, or genes 
+        else:
+            self.num_genes = chromosome_len
         self.current_accuracy = 0 #Current accuracy of the SVM using the applied morpholigcal operators
-        self.current_chromosomes = [0]*self.pop_size #List to keep track of the current most fit chromosomes
+        self.current_pop = [0]*self.pop_size #List to keep track of the current most fit chromosomes
+        self.mutation_rate = 100 #Likelihood for a mutation on a given gene to occur; large values mean less likely
         
     def getAccuracy(self):
         return self.current_accuracy
@@ -64,7 +75,7 @@ class morphological_evolver():
     
     def createPop(self):
         for i in range(self.pop_size):
-            self.current_chromosomes[i] = [0]*self.num_operators
+            self.current_pop[i] = [0]*self.num_genes
     
     def evaluateFitness(self, accuracy):
        if(accuracy == self.base_accuracy):
@@ -72,7 +83,7 @@ class morphological_evolver():
        else:
            return 0
        
-    def mutateParents(self, parentA, parentB):
+    def crossover(self, parentA, parentB):
         """
         Crossover point is the 4th element in the list
         Take parentB's first 3 elements and replace parentA's first 3 elements with them
@@ -83,13 +94,34 @@ class morphological_evolver():
             childA = [100, 200, 300, 4, 5, 6, 7]
             childB = [1, 2, 3, 400, 500, 600, 700]
         """
-        childA = [0]*self.num_operators
-        childB = [0]*self.num_operators
+        childA = ch.chromosome(self.num_genes)
+        childB = ch.chromosome(self.num_genes)
         for i in range(3): 
-            childA[i] = parentB[i]
-            childA[i + 3] = parentA[i + 3]
-            childB[i] = parentA[i]
-            childB[i + 3] = parentB[i + 3]
-        childA[-1] = parentA[-1]
-        childB[-1] = parentB[-1]
+            childA.genes[i] = parentB[i]
+            childA.genes[i + 3] = parentA[i + 3]
+            childB.genes[i] = parentA[i]
+            childB.genes[i + 3] = parentB[i + 3]
+        childA.genes[-1] = parentA[-1]
+        childB.genes[-1] = parentB[-1]
         return (childA, childB)
+"""
+    def mutate(self):
+        for i in range(self.pop_size):
+            if(random.randint(0, self.mutation_rate) == 10):
+                if(self.current_pop[i].)
+        
+
+#Test case for the crossover() func
+X = [1, 2, 3, 4, 5, 6, 7]
+Y = [70, 80, 90, 1, 2, 3, 4]
+
+m = morphological_evolver()
+(Z, T) = m.crossover(X, Y)
+print("parentA: ", X, "parentB: ", Y)
+print("childA: ", Z, "childB: ", T)
+
+"""
+(A, B) = m.crossover(X, Y)
+m.current_pop[0] = A
+m.current_pop[1] = B
+"""

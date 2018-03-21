@@ -2,6 +2,8 @@
 """
 Created on Wed Mar 21 15:51:18 2018
 
+Tests the mutation function for the morphological_evolver().
+
 @author: etcyl
 """
 

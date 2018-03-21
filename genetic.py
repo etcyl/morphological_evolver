@@ -46,7 +46,7 @@ class morphological_evolver():
         else:
             self.generations = num_generations 
         if population_size is None:
-            self.pop_size = 100
+            self.pop_size = 5
         else:
             self.pop_size = population_size
         if baseline_accuracy is None:
@@ -60,6 +60,7 @@ class morphological_evolver():
         self.current_accuracy = 0 #Current accuracy of the SVM using the applied morpholigcal operators
         self.current_pop = [0]*self.pop_size #List to keep track of the current most fit chromosomes
         self.mutation_rate = 100 #Likelihood for a mutation on a given gene to occur; large values mean less likely
+        self.createPop()
         
     def getAccuracy(self):
         return self.current_accuracy
@@ -75,7 +76,7 @@ class morphological_evolver():
     
     def createPop(self):
         for i in range(self.pop_size):
-            self.current_pop[i] = [0]*self.num_genes
+            self.current_pop[i] = ch.chromosome(self.num_genes)
     
     def evaluateFitness(self, accuracy):
        if(accuracy == self.base_accuracy):
@@ -104,11 +105,12 @@ class morphological_evolver():
         childA.genes[-1] = parentA[-1]
         childB.genes[-1] = parentB[-1]
         return (childA, childB)
-"""
+
     def mutate(self):
         for i in range(self.pop_size):
-            if(random.randint(0, self.mutation_rate) == 10):
-                if(self.current_pop[i].)
+            for j in range(self.num_genes):
+                if(random.randint(0, self.mutation_rate) == 10):
+                    self.current_pop[i].toggleGene(j)
         
 
 #Test case for the crossover() func
@@ -120,8 +122,17 @@ m = morphological_evolver()
 print("parentA: ", X, "parentB: ", Y)
 print("childA: ", Z, "childB: ", T)
 
-"""
 (A, B) = m.crossover(X, Y)
+"""
 m.current_pop[0] = A
 m.current_pop[1] = B
 """
+
+def mutateAndPrint(evolver):
+    evolver.mutate()
+    printGenes(evolver)
+
+def printGenes(evolver):
+    for i in range(evolver.pop_size):
+        for j in range(evolver.num_genes):
+            print("Chromosome ", i, ", gene ", j, "value is: ", evolver.current_pop[i].getGene(j))

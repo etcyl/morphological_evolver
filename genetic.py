@@ -105,11 +105,12 @@ class morphological_evolver():
                 high_accuracies[1][1] = self.current_pop[i + 1].getAccuracy()
                 print("Another high found")            
             i = i + 2
-        print("Low accuracies list is:", low_accuracies)
-        print("High accuracies list is:", high_accuracies)
+        #print("Low accuracies list is:", low_accuracies)
+        #print("High accuracies list is:", high_accuracies)
         parentA = self.current_pop[high_accuracies[0][0]].getChromosome()
         parentB = self.current_pop[high_accuracies[1][0]].getChromosome()
         (childA, childB) = self.crossover(parentA, parentB)
+        print("parentA:", parentA)
         self.current_pop[low_accuracies[0][0]].setChromosome(childA)
         self.current_pop[low_accuracies[1][0]].setChromosome(childB)
         self.current_pop[low_accuracies[0][0]].setAccuracy(0)
@@ -127,15 +128,15 @@ class morphological_evolver():
             childA = [100, 200, 300, 4, 5, 6, 7]
             childB = [1, 2, 3, 400, 500, 600, 700]
         """
-        childA = ch.chromosome(self.num_genes)
-        childB = ch.chromosome(self.num_genes)
+        childA = [0]*self.num_genes
+        childB = [0]*self.num_genes
         for i in range(3): 
-            childA.genes[i] = parentB[i]
-            childA.genes[i + 3] = parentA[i + 3]
-            childB.genes[i] = parentA[i]
-            childB.genes[i + 3] = parentB[i + 3]
-        childA.genes[-1] = parentA[-1]
-        childB.genes[-1] = parentB[-1]
+            childA[i] = parentB[i]
+            childA[i + 3] = parentA[i + 3]
+            childB[i] = parentA[i]
+            childB[i + 3] = parentB[i + 3]
+        childA[-1] = parentA[-1]
+        childB[-1] = parentB[-1]
         return (childA, childB)
 
     def mutate(self):

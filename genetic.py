@@ -83,20 +83,30 @@ class morphological_evolver():
            return 0
     
     def updatePop(self, parentA, parentB):
-        (childA, childB) = self.crossover(parentA, parentB)
-        accuracies = [[0, 70], [0, 80]] #accuracies[0][0] is the index, accuracies[0][1] is the accuracy for that index
+        #(childA, childB) = self.crossover(parentA, parentB)
+        low_accuracies = [[0, 70], [0, 80]] #low_accuracies[0][0] is the index, low_accuracies[0][1] is the accuracy for that index
+        high_accuracies = [[0, 0], [0, 0]]
         i = 0
         for b in range(int(self.pop_size/2)):
-            if(self.current_pop[i].getAccuracy() < accuracies[0][1]):
-                accuracies[0][0] = i
-                accuracies[0][1] = self.current_pop[i].getAccuracy()
+            if(self.current_pop[i].getAccuracy() < low_accuracies[0][1]):
+                low_accuracies[0][0] = i
+                low_accuracies[0][1] = self.current_pop[i].getAccuracy()
                 print("New low found")
-            if(self.current_pop[i + 1].getAccuracy() < accuracies[1][1]):
-                accuracies[1][0] = i + 1
-                accuracies[1][1] = self.current_pop[i + 1].getAccuracy()
+            if(self.current_pop[i + 1].getAccuracy() < low_accuracies[1][1]):
+                low_accuracies[1][0] = i + 1
+                low_accuracies[1][1] = self.current_pop[i + 1].getAccuracy()
                 print("Another low found")
+            if(self.current_pop[i].getAccuracy() > high_accuracies[0][1]):
+                high_accuracies[0][0] = i
+                high_accuracies[0][1] = self.current_pop[i].getAccuracy()
+                print("New high found")
+            if(self.current_pop[i + 1].getAccuracy() > high_accuracies[1][1]):
+                high_accuracies[1][0] = i + 1
+                high_accuracies[1][1] = self.current_pop[i + 1].getAccuracy()
+                print("Another high found")            
             i = i + 2
-        print("Accuracies list is:", accuracies)
+        print("Low accuracies list is:", low_accuracies)
+        print("High accuracies list is:", high_accuracies)
         
     
     def crossover(self, parentA, parentB):

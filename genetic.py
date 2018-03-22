@@ -44,7 +44,7 @@ class morphological_evolver():
         else:
             self.generations = num_generations 
         if population_size is None:
-            self.pop_size = 5
+            self.pop_size = 10
         else:
             self.pop_size = population_size
         if baseline_accuracy is None:
@@ -84,14 +84,20 @@ class morphological_evolver():
     
     def updatePop(self, parentA, parentB):
         (childA, childB) = self.crossover(parentA, parentB)
-        accuracies = [[0, 0], [0, 0]] #accuracies[0][0] is the index, accuracies[0][1] is the accuracy for that index
-        for i in range(self.pop_size):
+        accuracies = [[0, 70], [0, 80]] #accuracies[0][0] is the index, accuracies[0][1] is the accuracy for that index
+        i = 0
+        for b in range(int(self.pop_size/2)):
             if(self.current_pop[i].getAccuracy() < accuracies[0][1]):
                 accuracies[0][0] = i
                 accuracies[0][1] = self.current_pop[i].getAccuracy()
+                print("New low found")
             if(self.current_pop[i + 1].getAccuracy() < accuracies[1][1]):
-                accuracies[1][0] = i
+                accuracies[1][0] = i + 1
                 accuracies[1][1] = self.current_pop[i + 1].getAccuracy()
+                print("Another low found")
+            i = i + 2
+        print("Accuracies list is:", accuracies)
+        
     
     def crossover(self, parentA, parentB):
         """
@@ -145,3 +151,7 @@ def printGenes(evolver):
     for i in range(evolver.pop_size):
         for j in range(evolver.num_genes):
             print("Chromosome ", i, ", gene ", j, "value is: ", evolver.current_pop[i].getGene(j))
+            
+def printAccuracy(evolver):
+    for i in range(evolver.pop_size):
+        print("Chromosome accuracy is:", evolver.current_pop[i].getAccuracy())

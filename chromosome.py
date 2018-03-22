@@ -10,7 +10,7 @@ import random
 class chromosome():
     
     def __init__(self, length):
-        self.accuruacy = 0 #Accuracy of an SVM, when it sequentially applies the genes to an image
+        self.accuracy = random.randint(0, 99) #Accuracy of an SVM, when it sequentially applies the genes to an image
         self.genes = [0]*length #Storage for an individual
         for i in range(length): #For all the genes in the list, 50% for the current element to be present or absent
             if(random.randint(0, 1) == 1):
@@ -29,3 +29,9 @@ class chromosome():
     
     def setGene(self, index, value):
         self.genes[index] = value
+        
+    def getAccuracy(self):
+        return self.accuracy
+    
+    def setAccuracy(self, new_accuracy):
+        self.accuracy = new_accuracy

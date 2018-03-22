@@ -4,7 +4,6 @@ Created on Thu Mar 15 16:42:05 2018
 Matt Fleetwood
 ECE 479/579 - Intelligent Robotics II
 Winter 2018
-
 Genetic algorithm that evolves a string of morphological operators.
 The morpholigcal operators are stored in a list and applied sequentially, e.g. the 0th 
 operator is applied first to a CIFAR-10 dataset image, then the 1st, etc.
@@ -12,7 +11,6 @@ A Support Vector Machine (SVM) is trained on the modified images.
 The classification accuracy is compared with a reference SVM, an SVM trained on the non-modified 
 dataset. The "most fit" string of operators are evolved until the SVM using them achieves 
 accuracy as good or better than the reference SVM.
-
 @author: etcyl
 """
 
@@ -83,7 +81,18 @@ class morphological_evolver():
            return 1
        else:
            return 0
-       
+    
+    def updatePop(self, parentA, parentB):
+        (childA, childB) = self.crossover(parentA, parentB)
+        accuracies = [[0, 0], [0, 0]] #accuracies[0][0] is the index, accuracies[0][1] is the accuracy for that index
+        for i in range(self.pop_size):
+            if(self.current_pop[i].getAccuracy() < accuracies[0][1]):
+                accuracies[0][0] = i
+                accuracies[0][1] = self.current_pop[i].getAccuracy()
+            if(self.current_pop[i + 1].getAccuracy() < accuracies[1][1]):
+                accuracies[1][0] = i
+                accuracies[1][1] = self.current_pop[i + 1].getAccuracy()
+    
     def crossover(self, parentA, parentB):
         """
         Crossover point is the 4th element in the list

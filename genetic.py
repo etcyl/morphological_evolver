@@ -105,8 +105,8 @@ class morphological_evolver():
                 high_accuracies[1][1] = self.current_pop[i + 1].getAccuracy()
                 print("Another high found")            
             i = i + 2
-        #print("Low accuracies list is:", low_accuracies)
-        #print("High accuracies list is:", high_accuracies)
+        print("Low accuracies list is:", low_accuracies)
+        print("High accuracies list is:", high_accuracies)
         parentA = self.current_pop[high_accuracies[0][0]].getChromosome()
         parentB = self.current_pop[high_accuracies[1][0]].getChromosome()
         (childA, childB) = self.crossover(parentA, parentB)

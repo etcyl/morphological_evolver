@@ -114,7 +114,13 @@ class morphological_evolver():
         self.current_pop[low_accuracies[0][0]].setChromosome(childA)
         self.current_pop[low_accuracies[1][0]].setChromosome(childB)
         self.current_pop[low_accuracies[0][0]].setAccuracy(0)
-        self.current_pop[low_accuracies[1][0]].setAccuracy(0)     
+        self.current_pop[low_accuracies[1][0]].setAccuracy(0)
+        for i in range(self.num_genes): #Randomly mutate a gene in the offspring
+            if(random.randint(0, self.mutation_rate) == 10):
+                self.current_pop[low_accuracies[0][0]].toggleGene(i)
+        for i in range(self.num_genes):
+            if(random.randint(0, self.mutation_rate) == 10):
+                self.current_pop[low_accuracies[0][1]].toggleGene(i)        
         printAccuracy(self)
     
     def crossover(self, parentA, parentB):
@@ -138,13 +144,6 @@ class morphological_evolver():
         childA[-1] = parentA[-1]
         childB[-1] = parentB[-1]
         return (childA, childB)
-
-    def mutate(self):
-        for i in range(self.pop_size):
-            for j in range(self.num_genes):
-                if(random.randint(0, self.mutation_rate) == 10):
-                    self.current_pop[i].toggleGene(j)
-        
 
 #Test case for the crossover() func
 X = [1, 2, 3, 4, 5, 6, 7]

@@ -7,10 +7,10 @@ Winter 2018
 Genetic algorithm that evolves a string of morphological operators.
 The morpholigcal operators are stored in a list and applied sequentially, e.g. the 0th 
 operator is applied first to a CIFAR-10 dataset image, then the 1st, etc.
-A Support Vector Machine (SVM) is trained on the modified images.
-The classification accuracy is compared with a reference SVM, an SVM trained on the non-modified 
-dataset. The "most fit" string of operators are evolved until the SVM using them achieves 
-accuracy as good or better than the reference SVM.
+A neural network (NN) is trained on the modified images.
+The classification accuracy is compared with a reference NN, an NN trained on the non-modified 
+dataset. The "most fit" string of operators are evolved until the NN using them achieves 
+accuracy as good or better than the reference NN.
 @author: etcyl
 """
 

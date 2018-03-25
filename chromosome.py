@@ -9,8 +9,8 @@ Chromosomes are a list of genes, in this case each element in the list represent
     2: Opening (erosion followed by dilation)
     3: Closing (dilation followed by erosion)
     4: Gradient (difference between dilation and erosion of an image)
-    5: Thinning
-    6: Thickening
+    5: Thinning <--- not yet implemented
+    6: Thickening <--- not yet implemented
 
 @author: etcyl
 """
@@ -45,3 +45,6 @@ class chromosome():
     
     def setAccuracy(self, new_accuracy):
         self.accuracy = new_accuracy
+    
+    def getChromosome(self):
+        return self.genes

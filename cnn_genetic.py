@@ -23,7 +23,7 @@ data_augmentation = True
 num_predictions = 20
 kernel = np.ones((3,3),np.uint8)
 
-#Create a class to use the genetic algorithm
+#Create a genetic algorithm class to use the genetic algorithm
 evolver = genetic.morphological_evolver()
 
 #Use each chromosome in the population to train the CNN

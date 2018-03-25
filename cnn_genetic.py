@@ -28,7 +28,7 @@ evolver = genetic.morphological_evolver()
 
 for k in range(evolver.generations):
     #Use each chromosome in the population to train the CNN
-    for i in range(evolver.pop_size):
+    for index in range(evolver.pop_size):
         #Get the CIFAR-10 data and training sets
         (x_train, y_train), (x_test, y_test) = cifar10.load_data()
         #Convert class vectors to binary class matrices
@@ -45,7 +45,7 @@ for k in range(evolver.generations):
         
         #If a gene is present, decode and apply it to the dataset before training the CNN
         for j in range(evolver.num_genes):
-            if evolver.current_pop[i].getGene(j) == 1:
+            if evolver.current_pop[index].getGene(j) == 1:
                 if j == 0: #Erosion
                     for i in range(len(x_train)):
                         x_train[i] = cv2.erode(x_train[i], kernel, iterations = 1)
@@ -78,5 +78,5 @@ for k in range(evolver.generations):
         #print('Test loss:', scores[0])
         print('Test accuracy:', scores[1])
 
-        evolver.current_pop[i].setAccuracy(scores[1])
+        evolver.current_pop[index].setAccuracy(scores[1])
     evolver.updatePop() #Create a new generation using crossover and mutation

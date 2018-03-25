@@ -42,7 +42,7 @@ class morphological_evolver():
     
     def __init__(self, num_generations = None, population_size = None, baseline_accuracy = None, chromosome_len = None):
         if num_generations is None:
-            self.generations = 100
+            self.generations = 10
         else:
             self.generations = num_generations 
         if population_size is None:
@@ -54,7 +54,7 @@ class morphological_evolver():
         else:
             self.base_accuracy = baseline_accuracy
         if chromosome_len is None:
-            self.num_genes = 7 #Number of morphological operators, or genes 
+            self.num_genes = 5 #Number of morphological operators, or genes 
         else:
             self.num_genes = chromosome_len
         self.current_accuracy = 0 #Current accuracy of the CNN using the applied morpholigcal operators
@@ -86,7 +86,7 @@ class morphological_evolver():
     
     def updatePop(self):
         printAccuracy(self)
-        low_accuracies = [[0, 70], [0, 80]] #low_accuracies[0][0] is the index, low_accuracies[0][1] is the accuracy for that index
+        low_accuracies = [[0, 0], [0, 0]] #low_accuracies[0][0] is the index, low_accuracies[0][1] is the accuracy for that index
         high_accuracies = [[0, 0], [0, 0]]
         i = 0
         for b in range(int(self.pop_size/2)):
@@ -131,10 +131,10 @@ class morphological_evolver():
         Take parentB's first 3 elements and replace parentA's first 3 elements with them
         Take parentA's first 3 elements and replace parentB's first 3 elements with them
         Example: 
-            parentA = [1, 2, 3, 4, 5, 6, 7]
-            parentB = [100, 200, 300, 400, 500, 600, 700]
-            childA = [100, 200, 300, 4, 5, 6, 7]
-            childB = [1, 2, 3, 400, 500, 600, 700]
+            parentA = [1, 2, 3, 4, 5]
+            parentB = [100, 200, 300, 400, 500]
+            childA = [100, 200, 300, 4, 5]
+            childB = [1, 2, 3, 400, 500]
         """
         childA = [0]*self.num_genes
         childB = [0]*self.num_genes

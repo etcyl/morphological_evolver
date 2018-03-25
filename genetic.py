@@ -4,13 +4,15 @@ Created on Thu Mar 15 16:42:05 2018
 Matt Fleetwood
 ECE 479/579 - Intelligent Robotics II
 Winter 2018
+
 Genetic algorithm that evolves a string of morphological operators.
 The morpholigcal operators are stored in a list and applied sequentially, e.g. the 0th 
 operator is applied first to a CIFAR-10 dataset image, then the 1st, etc.
-A neural network (NN) is trained on the modified images.
-The classification accuracy is compared with a reference NN, an NN trained on the non-modified 
-dataset. The "most fit" string of operators are evolved until the NN using them achieves 
-accuracy as good or better than the reference NN.
+A Convolutional Neural Network (CNN) is trained on the modified images.
+The classification accuracy is compared with a reference CNN, a CNN trained on the non-modified 
+dataset. The "most fit" string of operators are evolved until the CNN using them achieves 
+accuracy as good or better than the reference CNN.
+
 @author: etcyl
 """
 
@@ -21,7 +23,7 @@ class morphological_evolver():
     """The morphoglogical_evolver evolves a list of morphological operators"""
     #The class creates new chromosomes, lists of m_operators, from genes (m_operators)
     
-    type = 'Crossover mutation for SVM training on the CIFAR-10 dataset'
+    type = 'Crossover mutation for CNN training on the CIFAR-10 dataset'
     
     """
     Init / constructor arguments: 
@@ -55,7 +57,7 @@ class morphological_evolver():
             self.num_genes = 7 #Number of morphological operators, or genes 
         else:
             self.num_genes = chromosome_len
-        self.current_accuracy = 0 #Current accuracy of the SVM using the applied morpholigcal operators
+        self.current_accuracy = 0 #Current accuracy of the CNN using the applied morpholigcal operators
         self.current_pop = [0]*self.pop_size #List to keep track of the current most fit chromosomes
         self.mutation_rate = 100 #Likelihood for a mutation on a given gene to occur; large values mean less likely
         self.createPop()
@@ -144,7 +146,7 @@ class morphological_evolver():
         childA[-1] = parentA[-1]
         childB[-1] = parentB[-1]
         return (childA, childB)
-
+"""
 #Test case for the crossover() func
 X = [1, 2, 3, 4, 5, 6, 7]
 Y = [70, 80, 90, 1, 2, 3, 4]
@@ -155,7 +157,7 @@ print("parentA: ", X, "parentB: ", Y)
 print("childA: ", Z, "childB: ", T)
 
 (A, B) = m.crossover(X, Y)
-"""
+
 m.current_pop[0] = A
 m.current_pop[1] = B
 """

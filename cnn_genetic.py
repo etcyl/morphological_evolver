@@ -44,7 +44,7 @@ for k in range(evolver.generations):
         cnn = build_cnn.buildCNN()
         
         #If a gene is present, decode and apply it to the dataset before training the CNN
-        for j in range(len(evolver.num_genes)):
+        for j in range(evolver.num_genes):
             if evolver.current_pop[i].getGene(j) == 1:
                 if j == 0: #Erosion
                     for i in range(len(x_train)):

@@ -48,3 +48,6 @@ class chromosome():
     
     def getChromosome(self):
         return self.genes
+    
+    def setChromosome(self, genes):
+        self.genes = genes

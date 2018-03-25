@@ -70,8 +70,10 @@ for i in range(len(evolver.pop_size)):
                     x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_GRADIENT, kernel)
                 for i in range(len(x_test)):
                     x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_GRADIENT, kernel)
-        cnn.fit(x_train, y_train, batch_size=batch_size, epochs=epochs,
+    cnn.fit(x_train, y_train, batch_size=batch_size, epochs=epochs,
                   validation_data=(x_test, y_test), shuffle=True)
-        scores = cnn.evaluate(x_test, y_test, verbose=1)
-        print('Test loss:', scores[0])
-        print('Test accuracy:', scores[1])     
+    scores = cnn.evaluate(x_test, y_test, verbose=1)
+    print('Test loss:', scores[0])
+    print('Test accuracy:', scores[1])
+    evolver.current_pop[i].setAccuracy(scores[1])
+        

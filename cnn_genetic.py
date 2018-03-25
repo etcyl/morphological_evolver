@@ -39,7 +39,7 @@ for k in range(evolver.generations):
         x_test = x_test.astype('float32')
         x_train /= 255
         x_test /= 255
-        
+
         #Create the CNN class using Keras
         cnn = build_cnn.buildCNN()
         
@@ -71,10 +71,12 @@ for k in range(evolver.generations):
                         x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_GRADIENT, kernel)
                     for i in range(len(x_test)):
                         x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_GRADIENT, kernel)
+                        
         cnn.fit(x_train, y_train, batch_size=batch_size, epochs=epochs,
                   validation_data=(x_test, y_test), shuffle=True)
         scores = cnn.evaluate(x_test, y_test, verbose=1)
         #print('Test loss:', scores[0])
         print('Test accuracy:', scores[1])
+
         evolver.current_pop[i].setAccuracy(scores[1])
     evolver.updatePop() #Create a new generation using crossover and mutation

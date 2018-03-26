@@ -47,27 +47,27 @@ for k in range(evolver.generations):
             #If a gene is present, decode and apply it to the dataset before training the CNN
             for j in range(evolver.num_genes):
                 if evolver.current_pop[index].getGene(j) == 1:
-                    if j == 0: #Erosion
+                    if j == 1: #Erosion
                         for i in range(len(x_train)):
                             x_train[i] = cv2.erode(x_train[i], kernel, iterations = 1)
                         for i in range(len(x_test)):
                             x_test[i] = cv2.erode(x_test[i], kernel, iterations = 1)
-                    elif j == 1: #Dilation
+                    elif j == 2: #Dilation
                         for i in range(len(x_train)):
                             x_train[i] = cv2.dilate(x_train[i], kernel, iterations = 1)
                         for i in range(len(x_test)):
                             x_test[i] = cv2.dilate(x_test[i], kernel, iterations = 1)
-                    elif j == 2: #Opening
+                    elif j == 3: #Opening
                         for i in range(len(x_train)):
                             x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_OPEN, kernel)
                         for i in range(len(x_test)):
                             x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_OPEN, kernel)
-                    elif j == 3: #Closing
+                    elif j == 4: #Closing
                         for i in range(len(x_train)):
                             x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_CLOSE, kernel)
                         for i in range(len(x_test)):
                             x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_CLOSE, kernel)
-                    elif j == 4: #Gradient
+                    elif j == 5: #Gradient
                         for i in range(len(x_train)):
                             x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_GRADIENT, kernel)
                         for i in range(len(x_test)):

@@ -4,11 +4,12 @@ Created on Wed Mar 21 15:05:42 2018
 
 Chromosomes are a list of genes, in this case each element in the list represents a morphologial operator:
     
-    0: Erosion
-    1: Dilation (opposite of erosion)
-    2: Opening (erosion followed by dilation)
-    3: Closing (dilation followed by erosion)
-    4: Gradient (difference between dilation and erosion of an image)
+    0: No operator
+    1: Erosion
+    2: Dilation (opposite of erosion)
+    3: Opening (erosion followed by dilation)
+    4: Closing (dilation followed by erosion)
+    5: Gradient (difference between dilation and erosion of an image)
     5: Thinning <--- not yet implemented
     6: Thickening <--- not yet implemented
 
@@ -24,14 +25,11 @@ class chromosome():
         self.genes = [0]*length #Storage for an individual
         for i in range(length): #For all the genes in the list, 50% for the current element to be present or absent
             if(random.randint(0, 1) == 1):
-                self.setGene(i, 1) #Random value was 1 so the gene is present
+                self.setGene(i, random.randint(1, 5)) #Random value was 1 so the gene is present
             else:
                 self.setGene(i, 0) #Random value was 0 so the gene is absent
         
-    def toggleGene(self, index): #Turn the gene on or off, depending on the previous state (present or absent)
-        if(self.genes[index] == 0):
-            self.genes[index] = 1
-        else:
+    def toggleGene(self, index): #Turn the gene on or off
             self.genes[index] = 0
             
     def getGene(self, index):

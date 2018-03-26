@@ -42,7 +42,7 @@ class morphological_evolver():
     
     def __init__(self, num_generations = None, population_size = None, baseline_accuracy = None, chromosome_len = None):
         if num_generations is None:
-            self.generations = 10
+            self.generations = 20
         else:
             self.generations = num_generations 
         if population_size is None:
@@ -85,34 +85,34 @@ class morphological_evolver():
            return 0
     
     def updatePop(self):
-        printAccuracy(self)
-        low_accuracies = [[0, 0], [0, 0]] #low_accuracies[0][0] is the index, low_accuracies[0][1] is the accuracy for that index
+        #printAccuracy(self)
+        low_accuracies = [[0, 1], [0, 1]] #low_accuracies[0][0] is the index, low_accuracies[0][1] is the accuracy for that index
         high_accuracies = [[0, 0], [0, 0]]
         i = 0
         for b in range(int(self.pop_size/2)):
             if(self.current_pop[i].getAccuracy() < low_accuracies[0][1]):
                 low_accuracies[0][0] = i
                 low_accuracies[0][1] = self.current_pop[i].getAccuracy()
-                print("New low found")
+                #print("New low found")
             if(self.current_pop[i + 1].getAccuracy() < low_accuracies[1][1]):
                 low_accuracies[1][0] = i + 1
                 low_accuracies[1][1] = self.current_pop[i + 1].getAccuracy()
-                print("Another low found")
+                #print("Another low found")
             if(self.current_pop[i].getAccuracy() > high_accuracies[0][1]):
                 high_accuracies[0][0] = i
                 high_accuracies[0][1] = self.current_pop[i].getAccuracy()
-                print("New high found")
+                #print("New high found")
             if(self.current_pop[i + 1].getAccuracy() > high_accuracies[1][1]):
                 high_accuracies[1][0] = i + 1
                 high_accuracies[1][1] = self.current_pop[i + 1].getAccuracy()
-                print("Another high found")            
+                #print("Another high found")            
             i = i + 2
-        print("Low accuracies list is:", low_accuracies)
-        print("High accuracies list is:", high_accuracies)
+        #print("Low accuracies list is:", low_accuracies)
+        #print("High accuracies list is:", high_accuracies)
         parentA = self.current_pop[high_accuracies[0][0]].getChromosome()
         parentB = self.current_pop[high_accuracies[1][0]].getChromosome()
         (childA, childB) = self.crossover(parentA, parentB)
-        print("parentA:", parentA)
+        #print("parentA:", parentA)
         self.current_pop[low_accuracies[0][0]].setChromosome(childA)
         self.current_pop[low_accuracies[1][0]].setChromosome(childB)
         self.current_pop[low_accuracies[0][0]].setAccuracy(0)
@@ -138,29 +138,14 @@ class morphological_evolver():
         """
         childA = [0]*self.num_genes
         childB = [0]*self.num_genes
-        for i in range(3): 
-            childA[i] = parentB[i]
-            childA[i + 3] = parentA[i + 3]
-            childB[i] = parentA[i]
-            childB[i + 3] = parentB[i + 3]
-        childA[-1] = parentA[-1]
-        childB[-1] = parentB[-1]
+        for i in range(self.num_genes): 
+            if i < 3:
+                childA[i] = parentB[i]
+                childB[i] = parentA[i]
+            else:
+                childA[i] = parentA[i]
+                childB[i] = parentB[i]
         return (childA, childB)
-"""
-#Test case for the crossover() func
-X = [1, 2, 3, 4, 5, 6, 7]
-Y = [70, 80, 90, 1, 2, 3, 4]
-
-m = morphological_evolver()
-(Z, T) = m.crossover(X, Y)
-print("parentA: ", X, "parentB: ", Y)
-print("childA: ", Z, "childB: ", T)
-
-(A, B) = m.crossover(X, Y)
-
-m.current_pop[0] = A
-m.current_pop[1] = B
-"""
 
 def mutateAndPrint(evolver):
     evolver.mutate()

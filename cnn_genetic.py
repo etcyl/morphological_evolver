@@ -43,40 +43,76 @@ for k in range(evolver.generations):
         #Create the CNN class using Keras
         cnn = build_cnn.buildCNN()
         
-        #If a gene is present, decode and apply it to the dataset before training the CNN
-        for j in range(evolver.num_genes):
-            if evolver.current_pop[index].getGene(j) == 1:
-                if j == 0: #Erosion
-                    for i in range(len(x_train)):
-                        x_train[i] = cv2.erode(x_train[i], kernel, iterations = 1)
-                    for i in range(len(x_test)):
-                        x_test[i] = cv2.erode(x_test[i], kernel, iterations = 1)
-                elif j == 1: #Dilation
-                    for i in range(len(x_train)):
-                        x_train[i] = cv2.dilate(x_train[i], kernel, iterations = 1)
-                    for i in range(len(x_test)):
-                        x_test[i] = cv2.dilate(x_test[i], kernel, iterations = 1)
-                elif j == 2: #Opening
-                    for i in range(len(x_train)):
-                        x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_OPEN, kernel)
-                    for i in range(len(x_test)):
-                        x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_OPEN, kernel)
-                elif j == 3: #Closing
-                    for i in range(len(x_train)):
-                        x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_CLOSE, kernel)
-                    for i in range(len(x_test)):
-                        x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_CLOSE, kernel)
-                elif j == 4: #Gradient
-                    for i in range(len(x_train)):
-                        x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_GRADIENT, kernel)
-                    for i in range(len(x_test)):
-                        x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_GRADIENT, kernel)
-                        
-        cnn.fit(x_train, y_train, batch_size=batch_size, epochs=epochs,
-                  validation_data=(x_test, y_test), shuffle=True)
-        scores = cnn.evaluate(x_test, y_test, verbose=1)
-        #print('Test loss:', scores[0])
-        print('Test accuracy:', scores[1])
-
-        evolver.current_pop[index].setAccuracy(scores[1])
+        if(k == 0): #Update every individual for the first generation, k == 0, and then only the children after
+            #If a gene is present, decode and apply it to the dataset before training the CNN
+            for j in range(evolver.num_genes):
+                if evolver.current_pop[index].getGene(j) == 1:
+                    if j == 0: #Erosion
+                        for i in range(len(x_train)):
+                            x_train[i] = cv2.erode(x_train[i], kernel, iterations = 1)
+                        for i in range(len(x_test)):
+                            x_test[i] = cv2.erode(x_test[i], kernel, iterations = 1)
+                    elif j == 1: #Dilation
+                        for i in range(len(x_train)):
+                            x_train[i] = cv2.dilate(x_train[i], kernel, iterations = 1)
+                        for i in range(len(x_test)):
+                            x_test[i] = cv2.dilate(x_test[i], kernel, iterations = 1)
+                    elif j == 2: #Opening
+                        for i in range(len(x_train)):
+                            x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_OPEN, kernel)
+                        for i in range(len(x_test)):
+                            x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_OPEN, kernel)
+                    elif j == 3: #Closing
+                        for i in range(len(x_train)):
+                            x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_CLOSE, kernel)
+                        for i in range(len(x_test)):
+                            x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_CLOSE, kernel)
+                    elif j == 4: #Gradient
+                        for i in range(len(x_train)):
+                            x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_GRADIENT, kernel)
+                        for i in range(len(x_test)):
+                            x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_GRADIENT, kernel)
+            cnn.fit(x_train[0:1000], y_train[0:1000], batch_size=batch_size, epochs=epochs,
+                  validation_data=(x_test[0:1000], y_test[0:1000]), shuffle=True)
+            scores = cnn.evaluate(x_test[0:1000], y_test[0:1000], verbose=1)
+            #print('Test loss:', scores[0])
+            print('Test accuracy:', scores[1])
+            evolver.current_pop[index].setAccuracy(scores[1])
+                            
+        elif(k > 0): #First generation is complete, so only update for future children
+            if(evolver.current_pop[index].getAccuracy() == 0): #Find children by getting individuals that have 0 accuracy 
+                for j in range(evolver.num_genes):
+                    if evolver.current_pop[index].getGene(j) == 1:
+                        if j == 0: #Erosion
+                            for i in range(len(x_train)):
+                                x_train[i] = cv2.erode(x_train[i], kernel, iterations = 1)
+                            for i in range(len(x_test)):
+                                x_test[i] = cv2.erode(x_test[i], kernel, iterations = 1)
+                        elif j == 1: #Dilation
+                            for i in range(len(x_train)):
+                                x_train[i] = cv2.dilate(x_train[i], kernel, iterations = 1)
+                            for i in range(len(x_test)):
+                                x_test[i] = cv2.dilate(x_test[i], kernel, iterations = 1)
+                        elif j == 2: #Opening
+                            for i in range(len(x_train)):
+                                x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_OPEN, kernel)
+                            for i in range(len(x_test)):
+                                x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_OPEN, kernel)
+                        elif j == 3: #Closing
+                            for i in range(len(x_train)):
+                                x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_CLOSE, kernel)
+                            for i in range(len(x_test)):
+                                x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_CLOSE, kernel)
+                        elif j == 4: #Gradient
+                            for i in range(len(x_train)):
+                                x_train[i] = cv2.morphologyEx(x_train[i], cv2.MORPH_GRADIENT, kernel)
+                            for i in range(len(x_test)):
+                                x_test[i] = cv2.morphologyEx(x_test[i], cv2.MORPH_GRADIENT, kernel)
+                cnn.fit(x_train[0:1000], y_train[0:1000], batch_size=batch_size, epochs=epochs,
+                  validation_data=(x_test[0:1000], y_test[0:1000]), shuffle=True)
+                scores = cnn.evaluate(x_test[0:1000], y_test[0:1000], verbose=1)
+                #print('Test loss:', scores[0])
+                print('Test accuracy:', scores[1])
+                evolver.current_pop[index].setAccuracy(scores[1])
+                
     evolver.updatePop() #Create a new generation using crossover and mutation

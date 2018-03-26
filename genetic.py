@@ -42,7 +42,7 @@ class morphological_evolver():
     
     def __init__(self, num_generations = None, population_size = None, baseline_accuracy = None, chromosome_len = None):
         if num_generations is None:
-            self.generations = 20
+            self.generations = 10
         else:
             self.generations = num_generations 
         if population_size is None:
@@ -60,8 +60,15 @@ class morphological_evolver():
         self.current_accuracy = 0 #Current accuracy of the CNN using the applied morpholigcal operators
         self.current_pop = [0]*self.pop_size #List to keep track of the current most fit chromosomes
         self.mutation_rate = 100 #Likelihood for a mutation on a given gene to occur; large values mean less likely
+        self.current_gen = 0
         self.createPop()
         
+    def updateCurrentGen(self):
+        self.current_gen += 1
+        
+    def getCurrentGen(self):
+        return self.current_gen
+    
     def getAccuracy(self):
         return self.current_accuracy
 
@@ -85,6 +92,7 @@ class morphological_evolver():
            return 0
     
     def updatePop(self):
+        self.updateCurrentGen()
         #printAccuracy(self)
         low_accuracies = [[0, 1], [0, 1]] #low_accuracies[0][0] is the index, low_accuracies[0][1] is the accuracy for that index
         high_accuracies = [[0, 0], [0, 0]]
@@ -122,7 +130,8 @@ class morphological_evolver():
                 self.current_pop[low_accuracies[0][0]].toggleGene(i)
         for i in range(self.num_genes):
             if(random.randint(0, self.mutation_rate) == 10):
-                self.current_pop[low_accuracies[0][1]].toggleGene(i)        
+                self.current_pop[low_accuracies[1][0]].toggleGene(i)
+        print("Current generation is:", self.getCurrentGen())
         printAccuracy(self)
     
     def crossover(self, parentA, parentB):

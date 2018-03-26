@@ -74,6 +74,13 @@ class morphological_evolver():
 
     def setAccuracy(self, accuracy):
         self.current_accuracy = accuracy
+        
+    def avgAccuracy(self):
+        avg = 0
+        for i in range(self.pop_size):
+            avg = avg + self.currenet_pop[i].getAccuracy()
+        avg = avg / self.pop_size
+        self.setAccuracy(avg)
     
     def getChromosome(self):
         return self.current_chromosome
@@ -133,6 +140,8 @@ class morphological_evolver():
                 self.current_pop[low_accuracies[1][0]].toggleGene(i)
         print("Current generation is:", self.getCurrentGen())
         printAccuracy(self)
+        self.avgAccuracy()
+        print("Average accuracy is:", self.current_accuracy)
     
     def crossover(self, parentA, parentB):
         """
